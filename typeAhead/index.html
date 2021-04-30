@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type Ahead 👀</title>
+    <link rel="stylesheet" href="/typeAhead/style.css">
+</head>
+
+<body>
+    <form class="search-form">
+        <input type="text" class="search" placeholder="City or State">
+        <ul class="suggestions">
+            <li>Filter for a city</li>
+            <li>or a state</li>
+        </ul>
+    </form>
+    <script>
+        const endpoint =
+            'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+        const cities = [];
+        fetch(endpoint)
+            .then(blob => blob.json())
+            .then(data => cities.push(...data));
+        //push 是针对const变量加入数据的方法
+        //...是ES6新加的特性，可以将遍历每一个数据一个个放到数组了
+
+        function findMatches(WordToMatch, cities) {
+            return cities.filter(place => {
+                const regex = new RegExp(WordToMatch, 'gi'); //创建正则表达式对象，g global i 对大小写不敏感
+                return place.city.match(regex) || place.state.match(regex); //查找state或者cities的名字
+            })
+
+        }
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        //\B非单词边界匹配，\b单词边界  单词边界（字母与空格） d{3},连续匹配3次 这句话的意思是匹配3n（整数字）+1（非数字）这种组合（向后贪婪地找寻）前的非单词边界（1，000或1，000，000）第二个就是出现这种的位置
+        function displayMatches() {
+            // const matchArray = findMatches(this.value, cities);
+            console.log(this.value); //输入的值
+            const matchArray = findMatches(this.value, cities);
+            const html = matchArray.map(place => {
+                const regex = new RegExp(this.value, 'gi');
+                const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+                //replace 方法，第一个参数子字符串或要替换的模式的 RegExp 对象。 第二个参数一个字符串值。规定了替换文本或生成替换文本的函数。
+                const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+                return `
+                <li>
+                    <span class="name">${cityName},${stateName}</span>
+                    <span class="population">${numberWithCommas(place.population)}</span>
+                </li>
+                `;
+            }).join('');
+
+            suggestions.innerHTML = html;
+        }
+
+
+        const searchInput = document.querySelector('.search');
+        const suggestions = document.querySelector('.suggestions');
+        searchInput.addEventListener('change', displayMatches);
+        searchInput.addEventListener('keyup', displayMatches);
+    </script>
+</body>
+
+</html>

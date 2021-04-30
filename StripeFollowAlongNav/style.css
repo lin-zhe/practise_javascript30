@@ -1,0 +1,144 @@
+html {
+    box-sizing: border-box;
+    font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:wheat
+      /* linear-gradient(45deg, hsla(340, 100%, 55%, 1) 0%, hsla(340, 100%, 55%, 0) 70%),
+      linear-gradient(135deg, hsla(225, 95%, 50%, 1) 10%, hsla(225, 95%, 50%, 0) 80%),
+      linear-gradient(225deg, hsla(140, 90%, 50%, 1) 10%, hsla(140, 90%, 50%, 0) 80%),
+      linear-gradient(315deg, hsla(35, 95%, 55%, 1) 100%, hsla(35, 95%, 55%, 0) 70%); */
+}
+
+h2 {
+    margin-top: 0;
+    padding-top: .8em;
+}
+nav{
+    position: relative;
+    perspective: 600px;
+    /* 定义 3D 元素距视图的距离，以像素计 */
+}
+
+.cool >li>a{
+    color: yellow;
+    text-decoration: none;
+    font-size: 20px;
+    background: rgba(0,0,0,0.2);
+    padding: 10px 20px;
+    display: inline-block;
+    /* inline-block属性的元素既拥有了block元素可以设置width和height的特性，又保持了inline元素不换行的特性 */
+    margin: 20px;
+    border-radius: 5px;
+}
+
+nav ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.cool >li{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.dropdown{
+    opacity: 0;
+    position: absolute;
+    overflow: hidden;
+    padding: 20px;
+    top: -20px;
+    border-radius: 2px;
+    transition: all 0.05s;
+    transform: translateY(100px);
+    will-change: opacity;
+    /*  will-change属性通过告诉浏览器什么属性、什么元素将会发生变化，可以对这些操作进行可能性的优化，由此提高CSS动画的执行效率。*/
+    display: none;
+}
+
+/* 触发时的显示方式 */
+.trigger-enter .dropdown {
+    display: block;
+    /* 顺便设置了文字的显示方式 */
+  }
+
+.trigger-enter-active .dropdown {
+    opacity: 1;
+}
+
+.dropdownBackground {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 50px 100px rgba(50,50,93,.1), 0 15px 35px rgba(50,50,93,.15), 0 5px 15px rgba(0,0,0,.1);
+    transition: all 0.3s, opacity 0.1s, transform 0.02s;
+    /* 加快transform的速度，从而使其看不见坐标变化的时间 */
+    transform-origin: 50% 0;
+    display: flex;
+    justify-content: center;
+    opacity:0;
+}
+
+.dropdownBackground.open {
+  opacity: 1;
+  /* 非透明化 */
+}
+/* 设置箭头 */
+.arrow{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: white;
+    line-height: 1.7;
+    transform: translateY(-50%) rotate(45deg);
+    /* 正方体旋转45度，并上移-50% 形成三角形箭头 */
+}
+
+.bio img {
+    float: left;
+    margin-right: 20px;
+}
+
+
+.courses {
+    min-width: 300px;
+  }
+
+  .courses li {
+    padding: 10px 0;
+    display: block;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+  }
+
+  .dropdown a {
+    text-decoration: none;
+    color: #ffc600;
+  }
+/* 按钮的初始颜色 */
+a.button {
+    background: black;
+    display: block;
+    padding: 10px;
+    color: white;
+    margin-bottom: 10px;
+}
+/* 为每个按钮设置不同的颜色  */
+.button[href*=twitter] { background: #019FE9; }
+.button[href*=facebook] { background: #3B5998; }
+.button[href*=courses] { background: #ffc600; }
+
+

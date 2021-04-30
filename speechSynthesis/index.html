@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Synthesis</title>
+    <!-- 这里是为了获取字体样式 -->
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/speechSynthesis/style.css">
+</head>
+
+<body>
+    <div class="voiceinator">
+
+        <h1>The Voiceinator 5000</h1>
+
+        <select name="voice" id="voices">
+            <option value="">Select A Voice</option>
+        </select>
+
+        <label for="rate">Rate:</label>
+        <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+
+        <label for="pitch">Pitch:</label>
+
+        <input name="pitch" type="range" min="0" max="2" step="0.1">
+        <textarea name="text">Hello! I love JavaScript 👍</textarea>
+        <button id="stop">Stop!</button>
+        <button id="speak">Speak</button>
+
+    </div>
+
+    <script>
+        // 取得speechSynthesis对象，并取得浏览器支持的朗读语言，将所有支持的选项动态添加至下拉列表
+        const msg = new SpeechSynthesisUtterance();
+        let voices = [];
+        const voicesDropdown = document.querySelector('[name="voice"]');
+        const options = document.querySelectorAll('[type="range"], [name="text"]');
+        const speakButton = document.querySelector('#speak');
+        const stopButton = document.querySelector('#stop');
+
+        msg.text = document.querySelector('[name="text"]').value; //取得输入框的值
+
+        function populateVoices() {
+            // console.log(this);
+            voices = this.getVoices(); //返回当前设备所有可用声音的 SpeechSynthesisVoice (en-US)列表。
+            // console.log(voices)
+            voicesDropdown.innerHTML = voices
+                .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
+                //.filter(voice => voice.lang.includes('en'))//过滤
+                .join('');
+        }
+
+        function setVoice() {
+            msg.voice = voices.find(voice => voice.name === this.value); //找到所选中的值
+            console.log(msg.voice); //设置新的读法
+            toggle();
+        }
+
+
+        //默认为true
+        function toggle(startOver = true) {
+            speechSynthesis.cancel(); //取消读
+
+            if (startOver) {
+                console.log("播放")
+                speechSynthesis.speak(msg); //开始读
+                //google 音源读不了可能是因为localService: false， 微软的是true，可能是需要翻墙，翻墙就🆗了
+            }
+        }
+
+        function setOption() {
+            console.log(this.name, this.value, "设置了新的值"); //获取文字框和选项的值
+            msg[this.name] = this.value;
+            toggle();
+        }
+
+        speechSynthesis.addEventListener('voiceschanged', populateVoices); //这可以用来重新填充一个用户可以在事件触发时选择的声音列表
+        voicesDropdown.addEventListener('change', setVoice);
+        options.forEach(option => option.addEventListener('change', setOption)); //设置音调和速度
+        speakButton.addEventListener('click', toggle);
+        stopButton.addEventListener('click', () => toggle(false));
+    </script>
+</body>
+
+</html>

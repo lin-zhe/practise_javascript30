@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS + CSS Clock</title>
+    <link rel="stylesheet" href="/jsClock/style.css">
+</head>
+
+<body>
+    <div class="clock">
+        <div class="clock-face">
+            <div class="hand hour-hand"></div>
+            <div class="hand min-hand"></div>
+            <div class="hand second-hand"></div>
+        </div>
+    </div>
+</body>
+<script>
+    const secHand = document.querySelector('.second-hand');
+    const minHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+
+    function setDate() {
+        const date = new Date();
+        const second = date.getSeconds();
+        const secondDeg = (90 + (second / 60) * 360);
+
+        const min = date.getMinutes();
+        const minDeg = (90 + (min / 60) * 360);
+
+        const hour = date.getHours();
+        const hourDeg = (90 + (hour / 12) * 360 + (min / 12 / 60) * 360);
+        //	在发生跳顿的角度值处，将 CSS 的 `transition` 属性去掉
+        if (secondDeg === 90) secHand.style.transition = 'all 0s';
+        else secHand.style.transition = 'all .05s cubic-bezier(0.9, 0.54, 0.26, 1.68)'
+        if (minDeg === 90) minHand.style.transition - 'all 0s';
+        else minHand.style.transition = 'all .1s cubic-bezier(0.9, 0.54, 0.26, 1.68)';
+        //时针间距过大不做处理
+        //		if (hourDeg === 116.5) hourHand.style.transition = 'all 0s';
+        //		else hourHand.style.transition = 'all 3s';
+        secHand.style.transform = `rotate(${secondDeg}deg)`;
+        minHand.style.transform = `rotate(${minDeg}deg)`;
+        hourHand.style.transform = `rotate(${hourDeg}deg)`;
+
+    }
+    setInterval(setDate, 1000);
+</script>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sort Without Articles</title>
+    <link rel="stylesheet" href="/sortWithoutArticle/style.css">
+</head>
+
+<body>
+    <ul id="bands"></ul>
+</body>
+<script>
+    const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled',
+        'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive',
+        'Anywhere But Here', 'An Old Dog'
+    ];
+
+    function strip(bandName) {
+        return bandName.replace(/^(a |the |an )/i, '').trim(); //去掉冠词，去掉空格
+    }
+    //这里一定要加空格，才能说明是冠词
+    const sortedBands = bands.sort((a, b) => strip(a) > strip(b) ? 1 : -1);
+    document.querySelector('#bands').innerHTML =
+        sortedBands
+        .map(band => `<li>${band}</li>`)
+        .join(''); //去掉逗号
+    console.log(sortedBands);
+</script>
+
+</html>

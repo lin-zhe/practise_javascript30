@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack a Mole</title>
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/WhackAMole/style.css">
+</head>
+
+<body>
+    <h1>Whack-a-mole! <span class="score">0</span></h1>
+    <button onclick="startGame()">Start!</button>
+
+    <div class="game">
+        <div class="hole hole1">
+            <div class="mole"></div>
+        </div>
+        <div class="hole hole2">
+            <div class="mole"></div>
+        </div>
+        <div class="hole hole3">
+            <div class="mole"></div>
+        </div>
+        <div class="hole hole4">
+            <div class="mole"></div>
+        </div>
+        <div class="hole hole5">
+            <div class="mole"></div>
+        </div>
+        <div class="hole hole6">
+            <div class="mole"></div>
+        </div>
+    </div>
+
+    <script>
+        const holes = document.querySelectorAll('.hole');
+        const scoreBoard = document.querySelector('.score');
+        const moles = document.querySelectorAll('.mole');
+        let lastHole;
+        let TimeUp = false;
+        let score = 0;
+        //创建随机的时间
+        function randomTime(min, max) {
+            return Math.round(Math.random() * (max - min) + min);
+        }
+        // 随机的洞
+        function randomHole(holes) {
+            //随机的洞序号,length打成了lendth.. 从而导致Nan,一直递归，最后栈溢出了
+            const idx = Math.floor(Math.random() * holes.length);
+            console.log(idx);
+            const hole = holes[idx];
+            if (hole === lastHole) {
+                //若重复了，那就再来一次
+                // console.log("Ah nah thats the same one bud");
+                return randomHole(holes);
+            }
+            lastHole = hole;
+            return hole;
+        }
+
+
+        function peep() {
+            const time = randomTime(200, 1000);
+            const hole = randomHole(holes);
+            //升起
+            hole.classList.add('up');
+            setTimeout(() => {
+                // 未在randomtime时间内点击，降下，不得分
+                hole.classList.remove('up');
+                //若未超出总游戏时间，下一个升起
+                if (!timeUp) peep();
+            }, time);
+        }
+
+        function startGame() {
+            scoreBoard.textContent = 0;
+            timeUp = false;
+            score = 0;
+            //初始化
+            peep();
+            //设置10秒的总游戏时间
+            setTimeout(() => timeUp = true, 10000);
+        }
+
+        function bonk(e) {
+            if (!e.isTrusted) return;
+            score++;
+            //点击后，下降
+            this.parentNode.classList.remove('up');
+            scoreBoard.textContent = score;
+        }
+
+        moles.forEach(mole => mole.addEventListener('click', bonk));
+    </script>
+</body>
+
+</html>

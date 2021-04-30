@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Variable</title>
+    <link rel="stylesheet" href="/jsCSSVariables/style.css">
+</head>
+
+<body>
+    <h2>
+        Update CSS Variables with <span class="h1">JS</span>
+    </h2>
+    <div class="controls">
+        <label for="spacing">Spacing:</label>
+        <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+        <label for="blur">Blur:</label>
+        <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+        <label for="base">Base Color</label>
+        <input type="color" name="base" value="#ffc600">
+        <br />
+    </div>
+    <!-- <code class="result">试试显示样式
+
+        padding: <label id="code-spacing">10px</label>;
+        filter: blur(<label id="code-blur">10px</label>);
+        background: <label id="code-base">#8aa8af</label>;
+
+    </code> -->
+    <img src="/jsCSSVariables/picture.jfif">
+</body>
+
+<script>
+    const inputs = document.querySelectorAll('.controls input') //返回的是nodeList
+    function handleUpdate() {
+        const suffix = this.dataset.sizing || ''; //dataset是所有data-s数据的合集，然后由于颜色没有后缀，因此要返回‘’
+        // 在 JavaScript 中 document.documentElement 即代表文档根元素。所以要改变全局的 CSS 变量，可以这样写
+        document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix); //设置css变量的值，
+        //值得注意的是，这是设置的是全局变量，如果在input标签里设置属性，那么全局变量将不会生效
+        // document.getElementById(`code-${this.name}`).innerText = this.value + suffix;  
+        //页面参数实时显示
+    }
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate)); // 在滑块拖动过程中也实时变化
+
+
+    //	  以下为跨浏览器事件处理及 forEach 兼容性处理
+    //	  var EventUtil = {
+    //		  addHandler : function(element, type, handler) {
+    //			  if (element.addEventListener) {
+    //				  element.addEventListener(type, handler, false);
+    //			  } else if (element.attachEvent) {
+    //				  element.attachEvent("on" + type, handler);
+    //			  } else {
+    //				  element["on" + type] = handler;
+    //			  }
+    //		  },
+    //		  
+    //		  removeHandler: function(element, type, handler) {
+    //			  if (element.removeEventListener) {
+    //				  element.removeEventListener(type, handler, false);
+    //			  } else if (element.detachEvent) {
+    //				  element.attachEvent("on" + type, handler);
+    //			  } else {
+    //				  element["on" + type] = null;
+    //			  }
+    //		  }
+    //	  };
+    //	  
+    //	  if (!NodeList.prototype.forEach) {
+    //    NodeList.prototype.forEach = function(fn, scope) {
+    //        for(var i = 0, len = this.length; i < len; ++i) {
+    //            fn.call(scope, this[i], i, this);
+    //        }
+    //    }
+    //};
+    //	  
+    //	  inputs.forEach( input => EventUtil.addHandler(input, 'change', handleUpdate));
+    //	  inputs.forEach( input => EventUtil.addHandler(input, 'mousemove', handleUpdate));
+</script>
+
+</html>
