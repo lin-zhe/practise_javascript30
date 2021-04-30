@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding JavaScript's Capture</title>
+    <link rel="stylesheet" href="/eventCapturePropagationBubblingOnce/style.css">
+</head>
+
+<body class="bod">
+    <p>bod</p>
+    <div class="one">
+        <p>one</p>
+        <div class="two">
+            <p>two</p>
+            <div class="three">
+                <p> three</p>
+            </div>
+        </div>
+    </div>
+    <button> input</button>
+</body>
+<script>
+    const divs = document.querySelectorAll('div');
+    const button = document.querySelector('button');
+
+    function logText(e) {
+        console.log(this.classList.value);
+        // e.stopPropagation(); //停止由内向外的冒泡
+        console.log(this)
+    };
+
+    divs.forEach(div => div.addEventListener('click', logText, {
+        capture: false, //capture:ture,运行程序后点击内层div可以看到，事件的触发顺序为由外向内，即在事件捕获阶段监听到事件
+        once: false
+    }));
+    button.addEventListener('click', () => {
+        console.log('Click!!!');
+    }, {
+        once: true //指监听一次事件
+    });
+</script>
+
+</html>

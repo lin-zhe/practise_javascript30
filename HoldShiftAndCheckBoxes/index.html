@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/HoldShiftAndCheckBoxes/style.css">
+</head>
+
+<body>
+    <!--
+   The following is a common layout you would see in an email client.
+
+   When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
+
+  -->
+    <div class="inbox">
+        <div class="item">
+            <input type="checkbox">
+            <p>This is an inbox layout.</p>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Check one item</p>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Hold down your Shift key</p>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Check a lower item</p>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Everything inbetween should also be set to checked</p>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Try do it with out any libraries</p>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Just regular JavaScript</p>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Good Luck!</p>
+        </div>
+        <div class="item">
+            <input type="checkbox">
+            <p>Don't forget to tweet your result!</p>
+        </div>
+    </div>
+    <script>
+        const checkboxes = document.querySelectorAll(`.inbox input[type="checkbox"]`);
+
+        let lastchecked;
+
+        function handlecheck(e) {
+            console.log(e);
+            let inBetween = false;
+            if (e.shiftKey && this.checked) {
+                //同时发现已经被checked并且按下了shift键
+                // console.log("hi");
+                checkboxes.forEach(checkbox => {
+                    console.log(checkbox)
+                    //checkbox this 是指shift键按下的， lastchecked 鼠标单击市的位置
+                    if (checkbox === this || checkbox === lastchecked) {
+                        inBetween = !inBetween;
+                        console.log(inBetween);
+                        console.log('STarting to check them inbetween!');
+
+                    }
+                    if (inBetween) {
+                        checkbox.checked = true;
+                    }
+                })
+            }
+            lastchecked = this; //确定第一个点击的位置
+            // console.log("this is" + lastchecked)
+        }
+        checkboxes.forEach(checkbox => checkbox.addEventListener('click', handlecheck))
+    </script>
+</body>
+
+</html>

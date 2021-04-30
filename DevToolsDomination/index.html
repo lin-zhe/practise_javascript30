@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Console Tricks!</title>
+</head>
+
+<body>
+
+    <p onclick="makeGreen()">×BREAK×DOWN×</p>
+    <!-- 通过控制台 再相应元素右键->break on-> attribute modefications 可以为元素设置断点-->
+    <script>
+        const dogs = [{
+            name: 'Snickers',
+            age: 2
+        }, {
+            name: 'hugo',
+            age: 8
+        }];
+
+        function makeGreen() {
+            const p = document.querySelector('p');
+            p.style.color = '#BADA55';
+            p.style.fontSize = '50px';
+        }
+
+        // Regular
+        console.log('hello');
+        // Interpolated
+        console.log('hello I am a %s string', '💩')
+        // 比如参数支持类似 C 语言的字符串替换模式
+        //  %s 字符串
+        // %d 整数
+        // %f 浮点值
+        // %o Object
+        // %c 设定输出的样式，在之后的文字将按照第二个参数里的值进行显示
+
+        // Styled
+        // console.log('%c I am some great text', 'font-size:50px;background:red;text-shadow:10px 10px 0 blue')
+
+        // warning!
+        console.warn('oh nooo!');
+
+
+        // Error :|
+        console.error("shit!");
+
+        // Info
+        console.info('Crocodiles eat 3-4 people per year');
+
+        // Testing 测试表达式是否正确
+        const p = document.querySelector('p');
+        console.assert(p.classList.contains('ouch'), 'that is wrong');
+
+        // clearing 清除控制台
+        console.clear();
+
+
+        // Viewing DOM Elements
+        // log 输出这个 DOM 的 HTML 标签，而 dir 则会输出这个 DOM 元素的属性列表
+        console.log(p);
+        console.dir(p);
+        console.clear();
+
+
+        // Grouping together
+        dogs.forEach(dog => {
+            console.groupCollapsed(`${dog.name}`); //将group->变为grounpCollapsed使其更加紧凑。
+            console.log(`This is ${dog.name}`);
+            console.log(`${dog.name} is ${dog.age} years old`);
+            console.log(`${dog.name} is ${dog.age*7} years old`);
+            console.groupEnd(`${dog.name}`);
+        });
+        // counting
+        console.count('Wes');
+        console.count('Wes');
+        console.count('Steve');
+        console.count('Steve');
+        console.count('Wes');
+        console.count('Steve');
+        console.count('Wes');
+        console.count('Steve');
+        console.count('Steve');
+        console.count('Steve');
+        console.count('Steve');
+        console.count('Steve');
+        // timing
+        console.time('fetching data')
+        fetch('https://api.github.com/users/wesbos')
+            .then(data => data.json())
+            .then(data => {
+                console.timeEnd('fetching data');
+                console.log(data);
+            })
+        console.table(dogs);
+    </script>
+</body>
+
+</html>
